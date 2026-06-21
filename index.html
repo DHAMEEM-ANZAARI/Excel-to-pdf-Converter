@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Excel → PDF Converter</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">📊</div>
+    <span class="logo-name">Excel<em>→PDF</em></span>
+  </div>
+  <span class="header-pill">Browser Only</span>
+</header>
+
+<!-- Main -->
+<main>
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1>Convert Excel to PDF<br>in seconds</h1>
+    <p>Upload any .xlsx, .xls, or .csv file. Choose your layout settings and download a clean, formatted PDF — entirely in your browser.</p>
+  </div>
+
+  <!-- Feature pills -->
+  <div class="features">
+    <div class="feat"><div class="feat-dot"></div>No upload to server</div>
+    <div class="feat"><div class="feat-dot"></div>Multi-sheet support</div>
+    <div class="feat"><div class="feat-dot"></div>Live preview</div>
+    <div class="feat"><div class="feat-dot"></div>Custom page size & orientation</div>
+    <div class="feat"><div class="feat-dot"></div>Free & instant</div>
+  </div>
+
+  <!-- Card -->
+  <div class="card">
+
+    <!-- Drop Zone -->
+    <div id="dropzone" onclick="document.getElementById('file-input').click()"
+         ondragover="dzOver(event)" ondragleave="dzLeave()" ondrop="dzDrop(event)">
+      <div class="dz-icon">📁</div>
+      <h2>Drop your Excel or CSV file here</h2>
+      <p>Supports .xlsx · .xls · .csv</p>
+      <button class="btn-browse" type="button">Browse files</button>
+    </div>
+    <input type="file" id="file-input" accept=".xlsx,.xls,.csv" onchange="handleFile(this.files[0])" />
+
+    <!-- File Bar -->
+    <div id="file-bar">
+      <div class="file-chip">
+        <span>📄</span>
+        <span class="fname" id="fname"></span>
+        <span class="fsize" id="fsize"></span>
+      </div>
+      <button class="btn-remove" title="Remove file" onclick="resetAll()">✕</button>
+    </div>
+
+    <!-- Sheet Tabs -->
+    <div id="sheet-tabs"></div>
+
+    <!-- Settings -->
+    <div id="settings">
+      <div class="settings-head">PDF Options</div>
+      <div class="settings-grid">
+        <div class="sitem">
+          <div class="slabel">Page size</div>
+          <select id="opt-page">
+            <option value="a4" selected>A4</option>
+            <option value="letter">Letter</option>
+            <option value="a3">A3</option>
+            <option value="legal">Legal</option>
+          </select>
+        </div>
+        <div class="sitem">
+          <div class="slabel">Orientation</div>
+          <select id="opt-orient">
+            <option value="landscape" selected>Landscape</option>
+            <option value="portrait">Portrait</option>
+          </select>
+        </div>
+        <div class="sitem">
+          <div class="slabel">Font size (pt)</div>
+          <select id="opt-font">
+            <option value="7">7 pt</option>
+            <option value="8" selected>8 pt</option>
+            <option value="9">9 pt</option>
+            <option value="10">10 pt</option>
+          </select>
+        </div>
+        <div class="sitem">
+          <div class="slabel">Preview rows</div>
+          <select id="opt-preview" onchange="renderPreview()">
+            <option value="10" selected>10 rows</option>
+            <option value="25">25 rows</option>
+            <option value="50">50 rows</option>
+            <option value="all">All rows</option>
+          </select>
+        </div>
+        <div class="sitem" style="grid-column: span 2; border-right: none;">
+          <div class="slabel">Output filename</div>
+          <input type="text" id="opt-filename" placeholder="output (no .pdf)" value="converted" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Bar -->
+    <div id="action-bar">
+      <button class="btn-convert" id="btn-convert" onclick="convertToPDF()">⬇ Download PDF</button>
+    </div>
+  </div>
+
+  <!-- Status -->
+  <div id="status"></div>
+
+  <!-- Preview -->
+  <div id="preview-wrap">
+    <div class="preview-label">Preview — <strong id="preview-info"></strong></div>
+    <div class="table-scroll">
+      <table id="preview-table"></table>
+    </div>
+  </div>
+
+</main>
+
+<footer>All processing happens in your browser. Your data never leaves your device.</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
